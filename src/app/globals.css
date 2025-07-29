@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  /* BackstoryWorks Brand Colors */
+  --warm-light-tan: #FDF7F2;
+  --charcoal-gray: #333333;
+  --deep-rust: #B35230;
+  --muted-sage: #6A8A82;
+  --soft-navy: #2C3E50;
+  
+  --background: var(--warm-light-tan);
+  --foreground: var(--charcoal-gray);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+  
+  /* Custom brand colors for Tailwind */
+  --color-brand-tan: var(--warm-light-tan);
+  --color-brand-charcoal: var(--charcoal-gray);
+  --color-brand-rust: var(--deep-rust);
+  --color-brand-sage: var(--muted-sage);
+  --color-brand-navy: var(--soft-navy);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+/* Typography Classes */
+.font-serif {
+  font-family: var(--font-playfair), serif;
+}
+
+/* Logo transparency - removes white background */
+.logo-transparent {
+  mix-blend-mode: multiply;
+  background: transparent;
+}
