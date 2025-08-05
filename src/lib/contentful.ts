@@ -6,30 +6,6 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN || '',
 });
 
-export interface ContentfulBlogPost {
-  sys: {
-    id: string;
-    createdAt: string;
-    updatedAt: string;
-  };
-  fields: {
-    title: string;
-    slug: string;
-    excerpt: string;
-    content: Document;
-    publishedDate: string;
-    author?: string;
-    readTime?: string;
-    featuredImage?: {
-      fields: {
-        file: {
-          url: string;
-        };
-      };
-    };
-  };
-}
-
 export interface BlogPost {
   id: string;
   slug: string;
@@ -51,18 +27,18 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
 
     return response.items.map((item: any) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
       id: item.sys.id,
-      slug: item.fields.slug,
-      title: item.fields.title,
-      excerpt: item.fields.excerpt || 'No excerpt available',
+      slug: item.fields.slug || item.sys.id,
+      title: item.fields.title || 'Untitled',
+      excerpt: item.fields.excerpt || item.fields.description || item.fields.summary || 'No excerpt available',
       content: item.fields.content || { nodeType: 'document', data: {}, content: [] },
-      date: new Date(item.fields.publishedDate).toLocaleDateString('en-US', {
+      date: item.fields.publishedDate ? new Date(item.fields.publishedDate).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-      }),
+      }) : 'No date',
       readTime: item.fields.readTime || '5 min read',
       author: item.fields.author || 'BackstoryWorks Team',
-      featuredImage: item.fields.featuredImage?.fields.file.url,
+      featuredImage: item.fields.featuredImage?.fields?.file?.url,
     }));
   } catch (error) {
     console.error('Error fetching blog posts:', error);
@@ -85,18 +61,18 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     const item: any = response.items[0]; // eslint-disable-line @typescript-eslint/no-explicit-any
     return {
       id: item.sys.id,
-      slug: item.fields.slug,
-      title: item.fields.title,
-      excerpt: item.fields.excerpt || 'No excerpt available',
+      slug: item.fields.slug || item.sys.id,
+      title: item.fields.title || 'Untitled',
+      excerpt: item.fields.excerpt || item.fields.description || item.fields.summary || 'No excerpt available',
       content: item.fields.content || { nodeType: 'document', data: {}, content: [] },
-      date: new Date(item.fields.publishedDate).toLocaleDateString('en-US', {
+      date: item.fields.publishedDate ? new Date(item.fields.publishedDate).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-      }),
+      }) : 'No date',
       readTime: item.fields.readTime || '5 min read',
       author: item.fields.author || 'BackstoryWorks Team',
-      featuredImage: item.fields.featuredImage?.fields.file.url,
+      featuredImage: item.fields.featuredImage?.fields?.file?.url,
     };
   } catch (error) {
     console.error('Error fetching blog post:', error);
