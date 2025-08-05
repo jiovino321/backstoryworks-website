@@ -1,5 +1,6 @@
 const nextConfig = {
-  output: "export", // This tells Next.js to generate static files in /out
+  // Temporarily disable static export for deployment
+  // output: "export", 
 };
 
 export default nextConfig;

@@ -7,6 +7,16 @@ export default function Home() {
   return (
     <div className="min-h-screen pt-16" style={{backgroundColor: '#FDF7F2'}}>
       {/* Hero Section */}
+        <section className="relative min-h-[80vh] w-full">
+        <Image
+          src="/tree-rings-hero-bkgd.jpg"
+          alt="Tree rings background"
+          fill
+          priority
+          quality={75}
+          sizes="100vw"
+          className="object-cover z-0"
+        /></section>
       <div className="relative overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"

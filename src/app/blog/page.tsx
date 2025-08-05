@@ -1,27 +1,7 @@
-export default function Blog() {
-  const blogPosts = [
-    {
-      id: 1,
-      title: "The Power of Brand Storytelling in 2024",
-      excerpt: "Discover how authentic storytelling can transform your business and create deeper connections with your audience.",
-      date: "January 15, 2024",
-      readTime: "5 min read"
-    },
-    {
-      id: 2,
-      title: "Content Strategy: Quality vs. Quantity",
-      excerpt: "Learn why focusing on high-quality, targeted content delivers better results than publishing frequently.",
-      date: "January 10, 2024",
-      readTime: "7 min read"
-    },
-    {
-      id: 3,
-      title: "Building Your Brand Voice",
-      excerpt: "A step-by-step guide to developing a consistent and authentic voice that represents your brand values.",
-      date: "January 5, 2024",
-      readTime: "6 min read"
-    }
-  ];
+import { getAllBlogPosts } from '../../lib/contentful';
+
+export default async function Blog() {
+  const blogPosts = await getAllBlogPosts();
 
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
@@ -52,7 +32,7 @@ export default function Blog() {
                 </p>
                 
                 <a
-                  href={`/blog/${post.id}`}
+                  href={`/blog/${post.slug}`}
                   className="text-orange-600 hover:text-orange-800 font-medium"
                 >
                   Read more →
