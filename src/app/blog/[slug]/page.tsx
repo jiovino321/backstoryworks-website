@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import { BLOCKS, MARKS, INLINES } from '@contentful/rich-text-types';
+import { BLOCKS, MARKS } from '@contentful/rich-text-types';
 import { getBlogPost, getAllBlogPosts } from '../../../lib/contentful';
 
 interface BlogPostPageProps {
@@ -52,7 +52,12 @@ const richTextOptions = {
     [BLOCKS.PARAGRAPH]: (_node: unknown, children: React.ReactNode) => (
       <p className="mb-4 text-gray-700 leading-relaxed">{children}</p>
     ),
-    // Handle blockquote - temporarily disabled
+    [BLOCKS.QUOTE]: (_node: unknown, children: React.ReactNode) => (
+      <blockquote className="border-l-4 border-blue-500 pl-4 py-2 mb-4 italic text-gray-800 bg-gray-50">{children}</blockquote>
+    ),
+    'blockquote': (_node: unknown, children: React.ReactNode) => (
+      <blockquote className="border-l-4 border-blue-500 pl-4 py-2 mb-4 italic text-gray-800 bg-gray-50">{children}</blockquote>
+    ),
     [BLOCKS.UL_LIST]: (_node: unknown, children: React.ReactNode) => (
       <ul className="mb-4 space-y-2 list-disc list-inside">{children}</ul>
     ),
@@ -108,51 +113,7 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
         {/* Content */}
         <div className="prose prose-lg max-w-none">
           {post.content && post.content.nodeType === 'document' ? (
-            <div>
-              {post.content.content?.map((node: any, index: number) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-                if (node.nodeType === 'paragraph') {
-                  return (
-                    <p key={index} className="mb-4 text-gray-700 leading-relaxed">
-                      {node.content?.map((textNode: any, textIndex: number) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-                        if (textNode.nodeType === 'text') {
-                          const hasBold = textNode.marks?.some((mark: any) => mark.type === 'bold'); // eslint-disable-line @typescript-eslint/no-explicit-any
-                          const hasItalic = textNode.marks?.some((mark: any) => mark.type === 'italic'); // eslint-disable-line @typescript-eslint/no-explicit-any
-                          
-                          if (hasBold && hasItalic) {
-                            return <strong key={textIndex}><em>{textNode.value}</em></strong>;
-                          } else if (hasItalic) {
-                            return <em key={textIndex}>{textNode.value}</em>;
-                          } else if (hasBold) {
-                            return <strong key={textIndex}>{textNode.value}</strong>;
-                          }
-                          return textNode.value;
-                        }
-                        return null;
-                      })}
-                    </p>
-                  );
-                } else if (node.nodeType === 'heading-2') {
-                  return (
-                    <h2 key={index} className="text-2xl font-semibold mt-8 mb-4 text-gray-900">
-                      {node.content?.[0]?.value || ''}
-                    </h2>
-                  );
-                } else if (node.nodeType === 'heading-3') {
-                  return (
-                    <h3 key={index} className="text-xl font-semibold mt-6 mb-3 text-gray-900">
-                      {node.content?.[0]?.value || ''}
-                    </h3>
-                  );
-                } else if (node.nodeType === 'blockquote') {
-                  return (
-                    <blockquote key={index} className="border-l-4 border-blue-500 pl-4 py-2 mb-4 italic text-gray-800 bg-gray-50">
-                      {node.content?.[0]?.content?.[0]?.value || ''}
-                    </blockquote>
-                  );
-                }
-                return null;
-              })}
-            </div>
+            documentToReactComponents(post.content, richTextOptions)
           ) : (
             <div className="text-gray-700">
               <p>Content not available.</p>
