@@ -23,23 +23,30 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
     const response = await client.getEntries({
       content_type: 'pageBlogPost',
       order: ['-fields.publishedDate'],
+      include: 2, // Include linked entries up to 2 levels deep
     });
 
-    return response.items.map((item: any) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
-      id: item.sys.id,
-      slug: item.fields.slug || item.sys.id,
-      title: item.fields.title || 'Untitled',
-      excerpt: item.fields.excerpt || item.fields.description || item.fields.summary || 'No excerpt available',
-      content: item.fields.content || { nodeType: 'document', data: {}, content: [] },
-      date: item.fields.publishedDate ? new Date(item.fields.publishedDate).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }) : 'No date',
-      readTime: item.fields.readTime || '5 min read',
-      author: item.fields.author || 'BackstoryWorks Team',
-      featuredImage: item.fields.featuredImage?.fields?.file?.url,
-    }));
+    return response.items
+      .filter((item: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+        // Only include items with properly structured rich text content
+        const content = item.fields.content;
+        return content && typeof content === 'object' && content.nodeType === 'document';
+      })
+      .map((item: any) => ({ // eslint-disable-line @typescript-eslint/no-explicit-any
+        id: item.sys.id,
+        slug: item.fields.slug || item.sys.id,
+        title: item.fields.title || 'Untitled',
+        excerpt: item.fields.excerpt || item.fields.description || item.fields.summary || 'No excerpt available',
+        content: item.fields.content,
+        date: item.fields.publishedDate ? new Date(item.fields.publishedDate).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }) : 'No date',
+        readTime: item.fields.readTime || '5 min read',
+        author: item.fields.author || 'BackstoryWorks Team',
+        featuredImage: item.fields.featuredImage?.fields?.file?.url,
+      }));
   } catch (error) {
     console.error('Error fetching blog posts:', error);
     return [];
@@ -52,6 +59,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
       content_type: 'pageBlogPost',
       'fields.slug': slug,
       limit: 1,
+      include: 2, // Include linked entries up to 2 levels deep
     });
 
     if (response.items.length === 0) {
@@ -59,12 +67,19 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
     }
 
     const item: any = response.items[0]; // eslint-disable-line @typescript-eslint/no-explicit-any
+    
+    // Check if this item has proper rich text content
+    const content = item.fields.content;
+    if (!content || typeof content !== 'object' || content.nodeType !== 'document') {
+      return null;
+    }
+    
     return {
       id: item.sys.id,
       slug: item.fields.slug || item.sys.id,
       title: item.fields.title || 'Untitled',
       excerpt: item.fields.excerpt || item.fields.description || item.fields.summary || 'No excerpt available',
-      content: item.fields.content || { nodeType: 'document', data: {}, content: [] },
+      content: content,
       date: item.fields.publishedDate ? new Date(item.fields.publishedDate).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',

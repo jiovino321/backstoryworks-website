@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS, MARKS } from '@contentful/rich-text-types';
-import { getBlogPost, getAllBlogPosts } from '../../../lib/contentful';
+import { getBlogPost } from '../../../lib/contentful';
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -11,10 +11,8 @@ interface BlogPostPageProps {
 }
 
 export async function generateStaticParams() {
-  const posts = await getAllBlogPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  // Temporarily disable static generation to fix build issues
+  return [];
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps) {
@@ -33,7 +31,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
   };
 }
 
-// Rich text rendering options
+// Rich text rendering options with embedded entry handling
 const richTextOptions = {
   renderMark: {
     [MARKS.BOLD]: (text: React.ReactNode) => <strong className="font-semibold text-gray-900">{text}</strong>,
@@ -55,9 +53,6 @@ const richTextOptions = {
     [BLOCKS.QUOTE]: (_node: unknown, children: React.ReactNode) => (
       <blockquote className="border-l-4 border-blue-500 pl-4 py-2 mb-4 italic text-gray-800 bg-gray-50">{children}</blockquote>
     ),
-    'blockquote': (_node: unknown, children: React.ReactNode) => (
-      <blockquote className="border-l-4 border-blue-500 pl-4 py-2 mb-4 italic text-gray-800 bg-gray-50">{children}</blockquote>
-    ),
     [BLOCKS.UL_LIST]: (_node: unknown, children: React.ReactNode) => (
       <ul className="mb-4 space-y-2 list-disc list-inside">{children}</ul>
     ),
@@ -67,6 +62,28 @@ const richTextOptions = {
     [BLOCKS.LIST_ITEM]: (_node: unknown, children: React.ReactNode) => (
       <li className="text-gray-700">{children}</li>
     ),
+    [BLOCKS.EMBEDDED_ENTRY]: (node: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+      // Handle embedded entries by rendering their title or a placeholder
+      const entry = node.data?.target;
+      if (entry?.fields?.title) {
+        return <div className="bg-gray-100 p-4 my-4 rounded">{entry.fields.title}</div>;
+      }
+      return <div className="bg-gray-100 p-4 my-4 rounded">Embedded content</div>;
+    },
+    [BLOCKS.EMBEDDED_ASSET]: (node: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+      // Handle embedded assets like images
+      const asset = node.data?.target;
+      if (asset?.fields?.file?.url) {
+        return (
+          <img
+            src={`https:${asset.fields.file.url}`}
+            alt={asset.fields.title || 'Embedded image'}
+            className="w-full max-w-2xl mx-auto my-6 rounded"
+          />
+        );
+      }
+      return <div className="bg-gray-100 p-4 my-4 rounded">Embedded media</div>;
+    },
   },
 };
 
@@ -112,13 +129,29 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
 
         {/* Content */}
         <div className="prose prose-lg max-w-none">
-          {post.content && post.content.nodeType === 'document' ? (
-            documentToReactComponents(post.content, richTextOptions)
-          ) : (
-            <div className="text-gray-700">
-              <p>Content not available.</p>
-            </div>
-          )}
+          {(() => {
+            try {
+              if (post.content && typeof post.content === 'object' && post.content.nodeType === 'document') {
+                return documentToReactComponents(post.content, richTextOptions);
+              } else {
+                return (
+                  <div className="text-gray-700">
+                    <p>Rich text content is not properly formatted.</p>
+                    {typeof post.content === 'string' && (
+                      <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                    )}
+                  </div>
+                );
+              }
+            } catch (error) {
+              console.error('Error rendering rich text:', error);
+              return (
+                <div className="text-gray-700">
+                  <p>Unable to render content. Please check the blog post format in Contentful.</p>
+                </div>
+              );
+            }
+          })()}
         </div>
 
         {/* Footer */}
