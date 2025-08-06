@@ -15,6 +15,7 @@
     "@tiptap/starter-kit": "^3.0.9",
     "@vercel/speed-insights": "^1.2.0",
     "contentful": "^11.7.15",
+    "dotenv": "^17.2.1",
     "next": "15.4.2",
     "react": "19.1.0",
     "react-dom": "19.1.0"

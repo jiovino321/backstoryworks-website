@@ -50,7 +50,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
         id: item.sys.id,
         slug: item.fields.slug || item.sys.id,
         title: item.fields.title || 'Untitled',
-        excerpt: item.fields.excerpt || item.fields.description || item.fields.summary || 'No excerpt available',
+        excerpt: item.fields.shortDescription || item.fields.excerpt || 'No excerpt available',
         content: item.fields.content,
         date: item.fields.publishedDate ? new Date(item.fields.publishedDate).toLocaleDateString('en-US', {
           year: 'numeric',
@@ -58,7 +58,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
           day: 'numeric',
         }) : 'No date',
         readTime: item.fields.readTime || '5 min read',
-        author: item.fields.author || 'BackstoryWorks Team',
+        author: item.fields.author?.fields?.name || 'BackstoryWorks Team',
         featuredImage: item.fields.featuredImage?.fields?.file?.url,
       }));
   } catch (error) {
@@ -99,7 +99,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
       id: item.sys.id,
       slug: item.fields.slug || item.sys.id,
       title: item.fields.title || 'Untitled',
-      excerpt: item.fields.excerpt || item.fields.description || item.fields.summary || 'No excerpt available',
+      excerpt: item.fields.shortDescription || item.fields.excerpt || 'No excerpt available',
       content: content,
       date: item.fields.publishedDate ? new Date(item.fields.publishedDate).toLocaleDateString('en-US', {
         year: 'numeric',
@@ -107,7 +107,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
         day: 'numeric',
       }) : 'No date',
       readTime: item.fields.readTime || '5 min read',
-      author: item.fields.author || 'BackstoryWorks Team',
+      author: item.fields.author?.fields?.name || 'BackstoryWorks Team',
       featuredImage: item.fields.featuredImage?.fields?.file?.url,
     };
   } catch (error) {
