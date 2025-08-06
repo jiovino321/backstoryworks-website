@@ -19,6 +19,12 @@ export interface BlogPost {
 }
 
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
+  // Fallback for missing environment variables (build-time safety)
+  if (!process.env.CONTENTFUL_SPACE_ID || !process.env.CONTENTFUL_ACCESS_TOKEN) {
+    console.warn('Contentful environment variables missing, returning empty blog posts');
+    return [];
+  }
+
   try {
     const response = await client.getEntries({
       content_type: 'pageBlogPost',
@@ -54,6 +60,12 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
 }
 
 export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  // Fallback for missing environment variables
+  if (!process.env.CONTENTFUL_SPACE_ID || !process.env.CONTENTFUL_ACCESS_TOKEN) {
+    console.warn('Contentful environment variables missing, cannot fetch blog post');
+    return null;
+  }
+
   try {
     const response = await client.getEntries({
       content_type: 'pageBlogPost',

@@ -2,6 +2,25 @@ import { getAllBlogPosts } from '../../lib/contentful';
 
 export default async function Blog() {
   const blogPosts = await getAllBlogPosts();
+  
+  // Show message if no posts are available (likely due to missing env vars)
+  if (!blogPosts || blogPosts.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 pt-16">
+        <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold text-gray-900 mb-8">Our Blog</h1>
+            <p className="text-lg text-gray-600 mb-8">
+              Blog posts are currently unavailable. Please check back later.
+            </p>
+            <p className="text-sm text-gray-500">
+              Content is powered by Contentful CMS.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
