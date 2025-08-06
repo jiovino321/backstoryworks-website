@@ -1,10 +1,17 @@
 import { createClient } from 'contentful';
 import { Document } from '@contentful/rich-text-types';
 
-const client = createClient({
-  space: process.env.CONTENTFUL_SPACE_ID || '',
-  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN || '',
-});
+// Lazy client creation to avoid build-time issues
+function getClient() {
+  if (!process.env.CONTENTFUL_SPACE_ID || !process.env.CONTENTFUL_ACCESS_TOKEN) {
+    throw new Error('Missing Contentful environment variables');
+  }
+  
+  return createClient({
+    space: process.env.CONTENTFUL_SPACE_ID,
+    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+  });
+}
 
 export interface BlogPost {
   id: string;
@@ -26,6 +33,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
   }
 
   try {
+    const client = getClient();
     const response = await client.getEntries({
       content_type: 'pageBlogPost',
       order: ['-fields.publishedDate'],
@@ -67,6 +75,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   }
 
   try {
+    const client = getClient();
     const response = await client.getEntries({
       content_type: 'pageBlogPost',
       'fields.slug': slug,
@@ -107,4 +116,4 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   }
 }
 
-export { client };
+// Client is now created lazily via getClient() function
