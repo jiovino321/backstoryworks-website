@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS, MARKS } from '@contentful/rich-text-types';
 import { getBlogPost } from '../../../lib/contentful';
@@ -97,6 +98,18 @@ export default async function BlogPost({ params }: BlogPostPageProps) {
 
   return (
     <div className="min-h-screen bg-white pt-16">
+      {post.featuredImage && (
+        <div className="w-full relative h-[50vh] max-h-[600px] min-h-[400px]">
+          <Image
+            src={'https:' + post.featuredImage}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority={true}
+            sizes="100vw"
+          />
+        </div>
+      )}
       <article className="max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <header className="mb-12">

@@ -17,6 +17,7 @@ export interface BlogPost {
   id: string;
   slug: string;
   title: string;
+  shortDescription: string;
   excerpt: string;
   content: Document;
   date: string;
@@ -50,7 +51,8 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
         id: item.sys.id,
         slug: item.fields.slug || item.sys.id,
         title: item.fields.title || 'Untitled',
-        excerpt: item.fields.shortDescription || item.fields.excerpt || 'No excerpt available',
+        shortDescription: item.fields.shortDescription || 'No subtitle available',
+        excerpt: item.fields.excerpt || 'No excerpt available',
         content: item.fields.content,
         date: item.fields.publishedDate ? new Date(item.fields.publishedDate).toLocaleDateString('en-US', {
           year: 'numeric',
@@ -59,7 +61,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
         }) : 'No date',
         readTime: item.fields.readTime || '5 min read',
         author: item.fields.author?.fields?.name || 'BackstoryWorks Team',
-        featuredImage: item.fields.featuredImage?.fields?.file?.url,
+        featuredImage: item.fields.featuredImage?.fields?.file?.url || null,
       }));
   } catch (error) {
     console.error('Error fetching blog posts:', error);
@@ -99,7 +101,8 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
       id: item.sys.id,
       slug: item.fields.slug || item.sys.id,
       title: item.fields.title || 'Untitled',
-      excerpt: item.fields.shortDescription || item.fields.excerpt || 'No excerpt available',
+      shortDescription: item.fields.shortDescription || 'No subtitle available',
+      excerpt: item.fields.excerpt || 'No excerpt available',
       content: content,
       date: item.fields.publishedDate ? new Date(item.fields.publishedDate).toLocaleDateString('en-US', {
         year: 'numeric',

@@ -18,6 +18,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "BackstoryWorks - Professional Content & Brand Storytelling",
   description: "Expert content creation and brand storytelling services. We help businesses tell their story through compelling content that connects and converts.",
+  icons: {
+    icon: [
+      { url: '/backstory-logo.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/backstory-logo.svg',
+    apple: '/backstory-logo.svg',
+  },
 };
 
 export default function RootLayout({

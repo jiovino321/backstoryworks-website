@@ -1,4 +1,5 @@
 import { getAllBlogPosts } from '../../lib/contentful';
+import Image from 'next/image';
 
 export default async function Blog() {
   const blogPosts = await getAllBlogPosts();
@@ -35,17 +36,31 @@ export default async function Blog() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {blogPosts.map((post) => (
             <article key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+              {post.featuredImage && (
+                <div className="relative w-full" style={{ paddingTop: '52.5%' }}>
+                  <Image
+                    src={'https:' + post.featuredImage}
+                    alt={post.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    priority={false}
+                  />
+                </div>
+              )}
               <div className="p-6">
                 <div className="flex items-center text-sm text-gray-500 mb-2">
                   <span>{post.date}</span>
-                  <span className="mx-2">•</span>
-                  <span>{post.readTime}</span>
                 </div>
                 
-                <h2 className="text-xl font-semibold text-gray-900 mb-3">
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">
                   {post.title}
                 </h2>
                 
+                <h3 className="text-lg text-gray-700 mb-3">
+                  {post.shortDescription}
+                </h3>
+                         
                 <p className="text-gray-600 mb-4">
                   {post.excerpt}
                 </p>
@@ -61,11 +76,6 @@ export default async function Blog() {
           ))}
         </div>
         
-        <div className="text-center mt-12">
-          <p className="text-gray-600">
-            More blog posts coming soon! Subscribe to our newsletter to stay updated.
-          </p>
-        </div>
       </div>
     </div>
   );
