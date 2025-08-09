@@ -19,12 +19,11 @@ export const metadata: Metadata = {
   title: "BackstoryWorks - Professional Content & Brand Storytelling",
   description: "Expert content creation and brand storytelling services. We help businesses tell their story through compelling content that connects and converts.",
   icons: {
-    icon: [
-      { url: '/backstory-logo.svg', type: 'image/svg+xml' },
-    ],
-    shortcut: '/backstory-logo.svg',
-    apple: '/backstory-logo.svg',
+    icon: '/backstory-logo.svg',
+    shortcut: { url: '/backstory-logo.svg' },
+    apple: { url: '/backstory-logo.svg' },
   },
+  manifest: '/site.webmanifest',
 };
 
 export default function RootLayout({
