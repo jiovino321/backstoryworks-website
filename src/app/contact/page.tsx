@@ -53,7 +53,7 @@ export default function Contact() {
             <div className="space-y-4">
               <div>
                 <h3 className="font-semibold text-gray-900">Email</h3>
-                <p className="text-gray-600">hello@backstoryworks.com</p>
+                <p className="text-gray-600">joe@backstoryworks.com</p>
               </div>
             </div>
           </div>
