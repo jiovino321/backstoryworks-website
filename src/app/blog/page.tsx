@@ -1,6 +1,9 @@
 import { getAllBlogPosts } from '../../lib/contentful';
 import Image from 'next/image';
 
+// Disable caching for this page
+export const revalidate = 0;
+
 export default async function Blog() {
   const blogPosts = await getAllBlogPosts();
   
