@@ -18,24 +18,17 @@ export default function Contact() {
                 <h3 className="font-semibold text-gray-900">Email</h3>
                 <p className="text-gray-600">hello@backstoryworks.com</p>
               </div>
-              
-              <div>
-                <h3 className="font-semibold text-gray-900">Phone</h3>
-                <p className="text-gray-600">(555) 123-4567</p>
-              </div>
-              
-              <div>
-                <h3 className="font-semibold text-gray-900">Business Hours</h3>
-                <p className="text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM</p>
-                <p className="text-gray-600">Saturday - Sunday: By appointment</p>
-              </div>
             </div>
           </div>
           
           <div className="bg-white p-8 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold mb-6">Send us a Message</h2>
             
-            <form className="space-y-4">
+            <form 
+              action="https://formspree.io/f/xyzpldqp" 
+              method="POST"
+              className="space-y-4"
+            >
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                   Name
@@ -44,6 +37,7 @@ export default function Contact() {
                   type="text"
                   id="name"
                   name="name"
+                  required
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                 />
               </div>
@@ -55,7 +49,8 @@ export default function Contact() {
                 <input
                   type="email"
                   id="email"
-                  name="email"
+                  name="_replyto"
+                  required
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                 />
               </div>
@@ -68,9 +63,13 @@ export default function Contact() {
                   id="message"
                   name="message"
                   rows={4}
+                  required
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                 ></textarea>
               </div>
+              
+              {/* Anti-spam honeypot field */}
+              <input type="text" name="_gotcha" style={{ display: 'none' }} />
               
               <button
                 type="submit"
