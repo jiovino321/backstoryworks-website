@@ -1,4 +1,41 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 export default function Contact() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const form = e.currentTarget;
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        // Show success message and redirect
+        alert('Thank you for your message! We\'ll be in touch soon.');
+        router.push('/');
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      setSubmitError('There was a problem sending your message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-50 pt-16">
       <div className="max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
@@ -28,7 +65,13 @@ export default function Contact() {
               action="https://formspree.io/f/xyzpldqp" 
               method="POST"
               className="space-y-4"
+              onSubmit={handleSubmit}
             >
+              {submitError && (
+                <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md">
+                  {submitError}
+                </div>
+              )}
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                   Name
@@ -73,9 +116,10 @@ export default function Contact() {
               
               <button
                 type="submit"
-                className="w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+                disabled={isSubmitting}
+                className="w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:bg-orange-400 disabled:cursor-not-allowed"
               >
-                Send Message
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </div>
