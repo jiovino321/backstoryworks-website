@@ -17,7 +17,7 @@ export default function Services() {
     },
     {
       title: "Brand Storytelling",
-      description: "Every brand has a story—let's find yours and tell it well. I'll help you uncover what makes you unique and share it with confidence, shaping your voice, tone, and messaging so your content stays consistent and compelling.",
+      description: "Every brand has a story—let's find yours and tell it well. I help you uncover what makes you unique and share it with confidence, shaping your voice, tone, and messaging so your content stays consistent and compelling.",
       details: [
         "Brand story development",
         "Voice and tone guidelines", 
@@ -28,7 +28,7 @@ export default function Services() {
     },
     {
       title: "Content Strategy", 
-      description: "I'll help you plan how, when, and where to share your story so it hits the right people at the right time—and makes the impact you're looking for.",
+      description: "I help you plan how, when, and where to share your story so it hits the right people at the right time—and makes the impact you're looking for.",
       details: [
         "Content audits and analysis",
         "Editorial calendar planning",
