@@ -6,7 +6,7 @@ export default function Services() {
   const services = [
     {
       title: "Content Writing",
-      description: "Website copy, blog posts, and marketing materials that actually sound like you—not a robot.",
+      description: "I help you tell your story in a way that sounds like you—not a robot—and grabs your audience's attention.",
       details: [
         "Website copy that converts",
         "Blog posts that engage",
@@ -17,7 +17,7 @@ export default function Services() {
     },
     {
       title: "Brand Storytelling",
-      description: "Figure out what makes you unique, then learn how to share it confidently with the world.",
+      description: "Every brand has a story—let's find yours and tell it well. I'll help you uncover what makes you unique and share it with confidence, shaping your voice, tone, and messaging so your content stays consistent and compelling.",
       details: [
         "Brand story development",
         "Voice and tone guidelines", 
@@ -28,7 +28,7 @@ export default function Services() {
     },
     {
       title: "Content Strategy", 
-      description: "A thoughtful plan for how, when, and where to share your story across all your channels.",
+      description: "I'll help you plan how, when, and where to share your story so it hits the right people at the right time—and makes the impact you're looking for.",
       details: [
         "Content audits and analysis",
         "Editorial calendar planning",
@@ -55,12 +55,10 @@ export default function Services() {
         <div className="space-y-12">
           {services.map((service, index) => (
             <div key={index} className="bg-white p-8 rounded-lg shadow-sm">
-              <div className="flex items-start space-x-4">
-                <div className="text-3xl">{service.icon}</div>
-                <div className="flex-1">
-                  <h3 className="font-serif text-2xl font-medium mb-4" style={{color: '#333333'}}>
-                    {service.title}
-                  </h3>
+              <div>
+                <h3 className="font-serif text-2xl font-medium mb-4" style={{color: '#333333'}}>
+                  {service.title}
+                </h3>
                   <p className="text-lg mb-6 leading-relaxed" style={{color: '#333333'}}>
                     {service.description}
                   </p>
@@ -72,7 +70,6 @@ export default function Services() {
                       </div>
                     ))}
                   </div>
-                </div>
               </div>
             </div>
           ))}
