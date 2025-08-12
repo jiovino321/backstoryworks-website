@@ -16,7 +16,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "BackstoryWorks - Professional Content & Brand Storytelling",
+  title: "BackstoryWorks - Your story, told well",
   description: "Expert content creation and brand storytelling services. We help businesses tell their story through compelling content that connects and converts.",
   icons: {
     icon: '/backstory-logo.svg',
