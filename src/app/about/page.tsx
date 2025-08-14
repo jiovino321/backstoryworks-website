@@ -11,26 +11,24 @@ export default function About() {
         
         <div className="prose prose-lg mx-auto">
           <div className="bg-white p-8 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold mb-6">Our Mission</h2>
+            <h2 className="text-2xl font-semibold mb-2">Our Mission</h2>
             <p className="text-gray-600 mb-6">
-              At BackstoryWorks, we believe that every business has a unique story worth telling. 
-              Our mission is to help you discover, craft, and share that story in a way that 
-              resonates with your audience and drives meaningful connections.
+              At BackstoryWorks, we believe every business has a story worth telling — and that the best stories sound like the people behind them. Our mission is to help you uncover what makes you unique and share it in a way that feels true to you, connects with your audience, and builds lasting relationships.
             </p>
             
-            <h2 className="text-2xl font-semibold mb-6">What We Do</h2>
+            <h2 className="text-2xl font-semibold mb-2">My Backstory</h2>
             <p className="text-gray-600 mb-6">
-              We specialize in content creation, brand storytelling, and digital strategy. 
-              Whether you're a startup looking to establish your voice or an established 
-              business ready to evolve your narrative, we're here to help you communicate 
-              your value proposition effectively.
+              I started BackstoryWorks because I've seen too many great ideas and products hidden behind bland words — and too many businesses pretending to be something they're not, rather than sharing what makes them special. My favorite part of this work is helping someone read their own copy and say, "That sounds like me." That's when I know we've nailed it.
             </p>
             
-            <h2 className="text-2xl font-semibold mb-6">Why Choose Us</h2>
+            <h2 className="text-2xl font-semibold mb-2">What We Do</h2>
+            <p className="text-gray-600 mb-6">
+              We help you put your real voice into words that work. That might mean writing website copy that feels true to you, shaping your brand story, creating content that draws people in, or building a strategy so everything fits together. Whatever the project, the goal is the same: make sure your audience hears you loud and clear.
+            </p>
+            
+            <h2 className="text-2xl font-semibold mb-2">Why Choose Us</h2>
             <p className="text-gray-600">
-              With years of experience in content creation and brand development, we understand 
-              the power of authentic storytelling. We work closely with our clients to ensure 
-              their unique voice shines through in every piece of content we create.
+              Because you don't need generic copy — you need something that sounds like you and connects with the people you want to reach. We work side by side to capture your style, values, and personality, so every piece of content feels like it came straight from you (but with a little extra polish).
             </p>
           </div>
         </div>
